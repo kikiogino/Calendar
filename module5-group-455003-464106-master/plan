@@ -1,0 +1,21 @@
+make calendar skeleton 
+    
+    month:
+new event|__|__|__|__|__|__|__|
+calendars|__|__|__|__|__|__|__|
+         |__|__|__|__|__|__|__|
+         |__|__|__|__|__|__|__|
+         |__|__|__|__|__|__|__|
+         |__|__|__|__|__|__|__|
+         
+         click on event: bootstrap modal
+            - edit
+            - delete
+            - close (x)
+            - view 
+            - share: new modal
+     
+mod 3 login 
+create mysqldatabase 
+  - events: eventid, owner, yr, month(jan=0), day(1=0), time, description, name, shared with, link, location, tag(?), repeat(?)
+  - users: userid, first name, last name, username, password

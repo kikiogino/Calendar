@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="calendar.css" rel="stylesheet">
+    <script>
+    (function(){Date.prototype.deltaDays=function(c){return new Date(this.getFullYear(),this.getMonth(),this.getDate()+c)};Date.prototype.getSunday=function(){return this.deltaDays(-1*this.getDay())}})();
+function Week(c){this.sunday=c.getSunday();this.nextWeek=function(){return new Week(this.sunday.deltaDays(7))};this.prevWeek=function(){return new Week(this.sunday.deltaDays(-7))};this.contains=function(b){return this.sunday.valueOf()===b.getSunday().valueOf()};this.getDates=function(){for(var b=[],a=0;7>a;a++)b.push(this.sunday.deltaDays(a));return b}}
+function Month(c,b){this.year=c;this.month=b;this.nextMonth=function(){return new Month(c+Math.floor((b+1)/12),(b+1)%12)};this.prevMonth=function(){return new Month(c+Math.floor((b-1)/12),(b+11)%12)};this.getDateObject=function(a){return new Date(this.year,this.month,a)};this.getWeeks=function(){var a=this.getDateObject(1),b=this.nextMonth().getDateObject(0),c=[],a=new Week(a);for(c.push(a);!a.contains(b);)a=a.nextWeek(),c.push(a);return c}};
+    </script>
+</head> 
+<body>
+    <button id = "next_month_btn">NEXT</button>
+      <div id = "container mh-100" >
+        <table class="table table-bordered">
+                <thead>
+                  <tr class="table-primary">
+                   
+                    <th scope="col">Sunday</th>
+                    <th scope="col">Monday</th>
+                    <th scope="col">Tuesday</th>
+                    <th scope="col">Wednesday</th>
+                    <th scope="col">Thursday</th>
+                    <th scope="col">Friday</th>
+                    <th scope="col">Saturday</th>
+                  </tr>
+                </thead>
+                <tbody id="table_body">
+                    <!-- for every week, get saunday and populate week[0 to 6] -->
+                <!-- <tr>
+                <td class = "day"></td>
+                <td class = "day"></td>
+                <td class = "day"></td>
+                <td class = "day"> </td>
+                <td class = "day"> </td>
+                <td class = "day"> </td>
+                <td class = "day"> </td>
+                </tr> -->
+
+               
+
+                </tbody>
+              </table>
+            </div>
+
+
+              <script>
+                  document.addEventListener("DOMContentLoaded", updateCalendar, false);
+
+              // For our purposes, we can keep the current month in a variable in the global scope
+var currentMonth = new Month(2017, 9); // October 2017
+
+
+// Change the month when the "next" button is pressed
+document.getElementById("next_month_btn").addEventListener("click", function(event){
+    // let old = document.getElementById("table_body");
+    // this.removeChild(old);
+    // remove_month();
+    currentMonth = currentMonth.nextMonth(); // Previous month would be currentMonth.prevMonth()
+    updateCalendar(); // Whenever the month is updated, we'll need to re-render the calendar in HTML
+	alert("The new month is "+currentMonth.month+" "+currentMonth.year);
+}, false);
+
+// function remove_month() {
+//   var select = document.getElementById('table_body');
+//   select.removeChild();
+//   console.log(select.lastChild);
+
+
+//   for (var c in document.getElementById('table_body')){
+//     var select = document.getElementById('table_body');
+//     select.removeChild();
+//   }
+// }
+
+
+
+// This updateCalendar() function only alerts the dates in the currently specified month.  You need to write
+// it to modify the DOM (optionally using jQuery) to display the days and weeks in the current month.
+function updateCalendar(){
+    
+	var weeks = currentMonth.getWeeks();
+	
+	for(var w in weeks){
+		var days = weeks[w].getDates();
+		// days contains normal JavaScript Date objects.
+        
+        let start = document.getElementById("table_body");
+        let create_row = document.createElement("tr");
+        create_row.setAttribute("id", "row"+w);
+        start.appendChild(create_row);
+        
+		for(var d in days){
+			// You can see console.log() output in your JavaScript debugging tool, like Firebug,
+            // WebWit Inspector, or Dragonfly.
+        let row = document.getElementById("row"+w);
+        let create_day = document.createElement("td");
+        create_day.setAttribute("id", "day"+d);
+        start.appendChild(create_day);
+        let day = days[d];
+
+        
+        
+            console.log(days[d].toISOString());
+            
+            create_day.textContent = day;
+		}
+	}
+}
+</script>
+    
+
+</body>
+
+</html>
